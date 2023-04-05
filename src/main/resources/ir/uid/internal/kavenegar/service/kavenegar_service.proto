@@ -1,0 +1,9 @@
+syntax = "proto3";
+//todo :change this package from ir.uid.internal to ir.uid.internal
+package ir.uid.internal.kavenegar;
+import "ir/uid/internal/kavenegar/kavenegar.proto";
+
+service KavenegarService{
+  rpc sendSms(SendSmsRequest) returns (SendSmsResponse){};
+  rpc makePhoneCall(MakePhoneCallRequest) returns (MakePhoneCallResponse){};
+}

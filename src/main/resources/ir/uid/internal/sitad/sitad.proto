@@ -1,0 +1,74 @@
+syntax = "proto3";
+package ir.uid.internal.sitad;
+import "ir/uid/internal/base.proto";
+import "ir/uid/external/base/user.proto";
+import "ir/uid/external/base/api/api.proto";
+import "ir/uid/external/base/api/bank.proto";
+import "ir/uid/external/base/api/person.proto";
+import "ir/uid/external/base/api/address.proto";
+message GetNationalImageRequest{
+  ServiceRequestContext requestContext = 1;
+  ir.uid.base.UserInformation userInfo = 2;
+}
+
+message GetNationalImageResponse{
+  ServiceResponseContext responseContext = 1;
+  string accessURL  = 2;
+  MinIOAssetInformation minioAssetInformation = 3;
+}
+
+message GetAddressInfoRequest{
+  ServiceRequestContext requestContext = 1;
+  string postalCode = 2;
+}
+
+message GetAddressInfoResponse{
+  ServiceResponseContext responseContext = 1;
+  ir.uid.external.api.Address address = 2;
+}
+
+message GetInquiryRequest{
+  ServiceRequestContext requestContext = 1;
+  string nationalCode = 2;
+  string birthDate = 3;
+}
+
+message GetInquiryResponse{
+  ServiceResponseContext responseContext = 1;
+  repeated InquiryResult inquiryResults = 2;
+}
+
+message GetBankAccountRequest{
+  ServiceRequestContext requestContext = 1;
+  string iban = 2;
+}
+
+message GetBankAccountResponse{
+  ServiceResponseContext responseContext = 1;
+  string iban = 2;
+  string accountNumber = 3;
+  ir.uid.external.api.AccountStatus accountStatus = 4;
+  string accountDescription = 5;
+  repeated ir.uid.external.api.Owner owners = 6;
+  ir.uid.external.api.NeedDepositIdentifier needDepositIdentifier = 7;
+  ir.uid.external.api.DepositIdentifierValidity depositIdentifierValidity = 8;
+}
+
+message InquiryResult{
+  string birthDate = 1;
+  int32 bookNumber = 2;
+  int32 bookRow = 3;
+  ir.uid.external.api.DeathStatus deathStatus = 4;
+  string family = 5;
+  string fatherName = 6;
+  ir.uid.external.api.Gender gender = 7;
+  string name = 8;
+  string nationalCode = 9;
+  int32 officeCode = 10;
+  string officeName = 11;
+  int32 shenasnameNumber = 12;
+  string shenasnameSeri = 13;
+  int32 shenasnameSerial = 14;
+  repeated string message = 15;
+  string exceptionMessage = 16;
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+package ir.uid.internal.ai;
+import "ir/uid/internal/base.proto";
+
+
+enum FaceMatchingResponse{
+  FACE_MATCHING_RESPONSE_FAILED = 0;
+  FACE_MATCHING_RESPONSE_SIMILAR = 1;
+  FACE_MATCHING_RESPONSE_NOT_SURE = 2;
+  FACE_MATCHING_RESPONSE_DIFFERENT = 3;
+}
+
+enum FaceMatchingFailureReason{
+  FACE_MATCHING_FAILURE_REASON_NOT_FAILED = 0;
+  FACE_MATCHING_FAILURE_REASON_NO_FACE = 1;
+  FACE_MATCHING_FAILURE_REASON_FAR_FACE = 2;
+  FACE_MATCHING_FAILURE_REASON_MULTIPLE_FACES = 3;
+  FACE_MATCHING_FAILURE_REASON_NO_ID_IMAGE = 4;
+  FACE_MATCHING_FAILURE_REASON_NO_LIVENESS_IMAGE = 5;
+}
+
+message FaceMatchingInformation{
+  FaceMatchingResponse response = 1;
+  FaceMatchingFailureReason failureReason = 2;
+}
+
+message ImageInformation {
+
+}
+message FaceMatchingServiceRequest{
+  ServiceRequestContext requestContext = 1;
+  AssetAccess livenessImageLink = 2;
+  AssetAccess idImageLink = 3;
+}
+
+message FaceMatchingServiceResponse{
+  ServiceResponseContext responseContext = 1;
+  FaceMatchingInformation faceMatchingStatus = 2;
+  ImageInformation livenessImageInformation = 3;
+  ImageInformation idImageInformation = 4;
+}

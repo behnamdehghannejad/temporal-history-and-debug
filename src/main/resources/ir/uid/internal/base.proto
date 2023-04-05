@@ -1,0 +1,86 @@
+syntax = "proto3";
+//todo :change this package from ir.uid.internal.ai to ir.uid.internal
+package ir.uid.internal;
+import "google/rpc/status.proto";
+
+message ServiceRequestHeader{
+  string requestId = 1;
+  string transactionId = 2;
+  string sessionId = 3;
+  string workflowId = 4;
+  string businessId = 5;
+  ClientType clientType = 6;
+}
+
+enum ClientType {
+  ANDROID = 0;
+  IOS = 1;
+  WEB = 2;
+}
+
+enum HashAlgorithm{
+  HASH_ALGORITHM_MD5 = 0;
+  HASH_ALGORITHM_SHA1 = 1;
+  HASH_ALGORITHM_SHA256 = 2;
+  HASH_ALGORITHM_SHA512 = 3;
+}
+
+enum AssetType{
+  ASSET_TYPE_IMAGE = 0;
+  ASSET_TYPE_VIDEO = 1;
+  ASSET_TYPE_MODEL = 2;
+}
+
+enum AccessType {
+  ACCESS_TYPE_READ_ONLY = 0;
+  ACCESS_TYPE_WRITE_ONLY = 1;
+  ACCESS_TYPE_READ_WRITE = 2;
+}
+
+message HashInformation {
+  bytes hash = 1;
+  HashAlgorithm algorithm = 2;
+}
+
+
+
+message AssetAccess {
+  /* Minio Url that is used to access the resource */
+  string accessUrl = 1;
+  AssetType type = 2;
+  AccessType accessType = 3;
+  bytes accessPassword = 4;
+  HashInformation hashInformation = 5;
+}
+
+message MinIOAssetInformation{
+  string bucketName = 1;
+  string path = 2;
+}
+
+message ServiceResponseContextData {
+  /*
+   * Contains response code, localized message and associated data.
+   *
+   * See [Errors guide](https://cloud.google.com/apis/design/errors) for detailed description and equivalent http codes.
+   *
+   * See [this markdown](https://github.com/grpc/grpc/blob/master/doc/statuscodes.md) for technical details.
+   */
+  google.rpc.Status status = 1;
+  ServiceRequestHeader requestHeaders = 2 ;
+}
+
+message ServiceRequestContextData{
+
+}
+
+message ServiceRequestContext{
+  ServiceRequestHeader requestHeader = 1;
+}
+
+message ServiceResponseContext{
+  ServiceResponseContextData response = 1;
+}
+
+
+

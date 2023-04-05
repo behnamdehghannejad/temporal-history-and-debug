@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package ir.uid.base;
+option cc_enable_arenas = true;
+option java_multiple_files = true;
+
+option java_package = "ir.uid.base";
+option swift_prefix = "";
+
+import "google/protobuf/timestamp.proto";
+
+
+enum EncryptionMethod{
+    ENCRYPTED_METHOD_UNDEFINED = 0;
+    ENCRYPTED_METHOD_BARE = 1;
+    ENCRYPTED_METHOD_AES256 = 2;
+}
+
+/*
+this container is used to move sensitive
+information between client and server and vice versa
+*/
+message SecretContainer {
+    /* byte representation of the data */
+    bytes secret = 1;
+    EncryptionMethod encryption=2;
+}

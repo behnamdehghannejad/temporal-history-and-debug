@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package ir.uid.base;
+option java_multiple_files = true;
+option java_package = "ir.uid.base";
+option objc_class_prefix = "RPC";
+
+import "google/type/date.proto";
+import "validate/validate.proto";
+import "google/rpc/status.proto";
+
+
+
+
+message BusinessInformation{
+  /*
+   * this is name of the project which will be used to identify the project the user
+   * is registering in:
+   * at the moment we have sajam,sana,crypto,labour_worker but it will expand in the future
+   */
+  string projectName = 1 [(validate.rules).message.required = true];
+  /* business id is business identifier that is generated for each business */
+  string businessId = 2[(validate.rules).message.required = true];
+  /* business token is used to  */
+  string businessToken = 3[(validate.rules).message.required = true];
+}
+
+enum Sex{
+  SEX_UNDEFINED=0;
+  SEX_MALE=1;
+  SEX_FEMALE=2;
+}
+
+message UserInformation{
+  /* National Id code of the user */
+  string nationalId = 1 [(validate.rules).message.required = true];
+  /* national Id card serial number located at the back of physical National id card of the user */
+  string nationalIdSerial = 2 [(validate.rules).message.required = true];
+  /* birth date in jalali calender*/
+  google.type.Date birthDate = 3 [(validate.rules).message.required = true];
+  Sex sex = 4 [(validate.rules).enum = {not_in: [0]},(validate.rules).message.required = true];
+}
+
+
+message User {
+  BusinessInformation businessInformation = 1 [(validate.rules).message.required = true];
+  UserInformation userInformation = 2 [(validate.rules).message.required = true];
+}
+
+
+enum AuthenticationState{
+  AUTHENTICATION_STATE_UNDEFINED = 0;
+  AUTHENTICATION_STATE_ACCEPTED = 1;
+  AUTHENTICATION_STATE_REJECTED = 2;
+}
+
+
+enum AuthenticationResponseReason{
+  // در حال انتظار
+  AUTHENTICATION_RESPONSE_REASON_UNDEFINED = 0;
+  //تایید شده
+  AUTHENTICATION_RESPONSE_REASON_ACCEPT = 1;
+  // عدم تطبیق چهره با ثبت احوال
+  AUTHENTICATION_RESPONSE_REASON_REJECT_FACE_NOT_MATCH_ID =2;
+  // زنده نبودن ویدئو ارسالی
+  AUTHENTICATION_RESPONSE_REASON_REJECT_VIDEO_NOT_LIVE = 3;
+  // نور نامناسب
+  AUTHENTICATION_RESPONSE_REASON_REJECT_VIDEO_BAD_LIGHT = 4;
+  // عدم وضوح تصویر
+  AUTHENTICATION_RESPONSE_REASON_REJECT_VIDEO_BAD_QUALITY = 5;
+  // فاصله بیش از حد با دوربین
+  AUTHENTICATION_RESPONSE_REASON_REJECT_PERSON_TOO_FAR_AWAY = 6;
+  // وجود چند چهره
+  AUTHENTICATION_RESPONSE_REASON_REJECT_MORE_THAN_ONE_PERSON = 7;
+  // عدم وجود چهره
+  AUTHENTICATION_RESPONSE_REASON_REJECT_NO_PERSON_DETECTED = 8;
+}
+
+message FinalAuthenticationStatus{
+  AuthenticationState state = 1;
+  AuthenticationResponseReason reason = 2;
+}
+// message that is sent via call back URL to the business
+message UserAuthenticationReport{
+  //Authentication process status
+  google.rpc.Status status = 1;
+  //Authentication session id for the user which is returned in RegisterUserSession endpoint
+  string sessionId = 2;
+  UserInformation userInformation = 3;
+  //Authentication status of the user
+  FinalAuthenticationStatus authenticationStatus = 4;
+}

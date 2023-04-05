@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+package ir.uid.base;
+
+option cc_enable_arenas = true;
+option java_multiple_files = true;
+
+option java_package = "ir.uid.base";
+option swift_prefix = "";
+import "ir/uid/base/base.proto";
+import "ir/uid/presentation/geometry.proto";
+import "validate/validate.proto";
+
+// Platform/Device type.
+enum PlatformType {
+    // Platform type cannot be determined or not enlisted.
+    PLATFORM_TYPE_UNSPECIFIED = 0;
+
+    // Mobile device.
+    PLATFORM_TYPE_MOBILE = 1;
+
+    // Tablet device.
+    PLATFORM_TYPE_TABLET = 2;
+
+    // Desktop computer (PCs, Macs, etc.)
+    PLATFORM_TYPE_DESKTOP = 3;
+
+    // Smart Watch.
+    PLATFORM_TYPE_WATCH = 4;
+
+    // Smart TVs.
+    PLATFORM_TYPE_TV = 5;
+}
+
+// Device's operating system.
+enum OperatingSystem {
+    // Platform operating system cannot be determined or not enlisted.
+    OPERATING_SYSTEM_UNSPECIFIED = 0;
+
+    // Web browsers that are not based on Chromium, Gecko or Webkit.
+    OPERATING_SYSTEM_WEB = 1;
+
+    // Android based operating systems.
+    OPERATING_SYSTEM_ANDROID = 2;
+
+    // Darwin-based systems like macOS, iOS, etc.
+    OPERATING_SYSTEM_DARWIN = 3;
+
+    // GNU/Linux or GNU/Hurd operating systems.
+    OPERATING_SYSTEM_GNU = 4;
+
+    // Windows NT based systems like Windows 7, Windows 10, etc.
+    OPERATING_SYSTEM_WINDOWS_NT = 5;
+
+    // Chromium based browsers like Google Chrome, Edge, Opera, Brave, etc.
+    OPERATING_SYSTEM_CHROMIUM = 21;
+
+    // Webkit based browsers like Apple Safari, etc.
+    OPERATING_SYSTEM_WEBKIT = 22;
+
+    // Gecko based browsers like Firefox, Thunderbird, etc.
+    OPERATING_SYSTEM_GECKO = 23;
+}
+
+// Device's platform information. 
+message Platform {
+    // **REQUIRED** Device type.
+    PlatformType type = 1;
+
+    // **REQUIRED** Environment that application is running on.
+    OperatingSystem os = 2;
+
+    // **REQUIRED** Operating system or browser version.
+    Version version = 3;
+
+    // **Android only** Value of [`Build.VERSION.RELEASE_OR_CODENAME`](https://developer.android.com/reference/kotlin/android/os/Build.VERSION#release_or_codename).
+    // For older Android versions, use `Build.VERSION.RELEASE` instead.
+    string release_version = 4;
+
+    // **Android only** Value of [`Build.VERSION.SECURITY_PATCH`](https://developer.android.com/reference/kotlin/android/os/Build.VERSION#security_patch).
+    string security_patch = 5;
+
+    // **Android only** Value of [`Build.VERSION.SDK_INT`](https://developer.android.com/reference/kotlin/android/os/Build.VERSION#sdk_int).
+    int32 sdk_version = 6;
+
+    /*
+     * **SERVER GENERATED** Device platform's representation for user.
+     *
+     * - Important: Client MUST NOT assume any logic or formatting specification for this value as it may change any time.
+     */
+    string localized_description = 15;
+}
+
+
+// Client's device model and hardware specifications
+message DeviceModel {
+    // Manufacturer of client's device, e.g. "Apple", "Samsung", etc.
+    string manufacturer = 1 [(validate.rules).string.min_len = 1];
+
+    // Device's internal code name, e.g. "SM-N9700" for Galaxy Note 10 or "iPhone12,3" for iPhone 11 Pro
+    string hardwareString = 2 [(validate.rules).string.min_len = 1];
+
+    // Device's marketing name, e.g. "Note 10 LTE" or "iPhone 11 Pro"
+    string model = 3;
+
+    // Main screen's dimension and pixel density.
+    ir.uid.presentation.DisplaySize main_screen_size = 4;
+
+    /* 
+     * CPU architecture string. e.g. x86_64, arm64, etc.
+     *
+     * - Note: In Android, use `Build.SUPPORTED_ABIS[0]` to obtain value.
+     */
+    string cpu_architecture = 5 [(validate.rules).string.pattern = "^[A-Za-z0-9]+$"];
+}
+
+// Device settings and 
+message DeviceFlags {
+    // Device is rooted/jailbroken.
+    bool rooted = 1;
+
+    // Hardware Keystore / Secure Enclave is available to store private keys.
+    bool secure_enclave_capable = 2;
+
+    // Biometric authentication (TouchID/Fingerprint, FaceID) exists.
+    bool biometric_authentication_capable = 3;
+
+    // User has set fingerprints/faces for biometric authentication.
+    bool biometric_authentication_activated = 4;
+
+    // Device has ISO 7816/14443 NFC reading capability.
+    bool nfc_capable = 5;
+
+    // Device has ISO 7816/14443 NFC writing capability.
+    bool nfc_payment_capable = 6;
+
+    // Device has touch input device.
+    bool touch_input_capable = 7;
+
+    // Determines user denied to receive push notification.
+    bool push_notification_access_denied = 21;
+}
+
+
+// Device ID, information and flags.
+message Device {    
+    /*
+     * Device vendor identification.
+     */
+    bytes id = 1 [(validate.rules).bytes = {min_len: 8, max_len: 32}];
+
+    // Client app properties.
+    AppInfo app_info = 2 [(validate.rules).message.required = true];
+
+    // Platform information.
+    Platform platform = 3 [(validate.rules).message.required = true];
+
+    // Hardware model information.
+    DeviceModel model = 4 [(validate.rules).message.required = true];
+
+    
+    // Device security and capability flags.
+    DeviceFlags flags = 5 [(validate.rules).message.required = true];
+
+}

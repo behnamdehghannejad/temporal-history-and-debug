@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package ir.uid.base;
+option cc_enable_arenas = true;
+option java_multiple_files = true;
+
+option java_package = "ir.uid.base";
+option swift_prefix = "";
+
+import "google/protobuf/timestamp.proto";
+
+
+
+
+// Standardized encryption/decryption methods for values in `Password` message.
+enum CipherMethod {
+    // No cipher algorithm is specified by client. Server must not tolerate this value.
+    CIPHER_METHOD_UNSPECIFIED = 0;
+
+    /*
+     * Cipher algorithm to encrypt:
+     *   - Create AES key using SHA2/256 hash function on shared secret.
+     *   - Do AES-256 cipher on data using derived symmetric key in previous step.
+     *   - Send the combined representation (nonce || ciphertext || tag) in `encoded` field.
+     *
+     */
+    CIPHER_METHOD_SHA256_AES256_GCM_V1 = 1;
+
+    /*
+     * Cipher algorithm:
+     *   - Create AES key using truncating first 32 bytes of shared secret.
+     *   - Do AES-256 cipher on data using derived symmetric key in previous step.
+     *   - Send the combined representation ( nonce || ciphertext || tag) in `encoded` field.
+     *
+     * ```swift
+     * import CryptoKit
+     * let sharedSecretData = sharedSecret.withUnsafeBytes({ Data(buffer: $0.bindMemory(to: UInt8.self)) })
+     * let keyData = secData.prefix(32)
+     * let symmetricKey = SymmetricKey(data: sha)
+     * let encoded = try AES.GCM.seal(Data(plainText.utf8), using: symmetricKey)
+     * password.encoded = encoded.combined!
+     * ```
+     */
+    CIPHER_METHOD_AES256_GCM_V1 = 3;
+}
+
+
+
+
+
+// Authentication token returned by server during login.
+message AuthenticationToken {
+    /*
+     * Determines when the token is created.
+     *
+     * - Important: Client MUST reject token if current system date is less than given issue date with tolerance of 30 seconds.
+     *
+     * - Important: Client MUST reject token if current system date is greater than given issue date with tolerance of 60 seconds.
+     */
+    google.protobuf.Timestamp issueDate = 1;
+
+    /*
+     * Determines when the token will be expired.
+     *
+     * - Important: Client MUST reject token if current system date is greater than given expiration date.
+     */
+    google.protobuf.Timestamp expireDate = 2;
+
+    // **REQUIRED** Authentication method.
+    string token = 3;
+    string refreshToken = 4;
+}
+

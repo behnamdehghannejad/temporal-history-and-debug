@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package ir.uid.external.api;
+option java_multiple_files = true;
+option java_package = "ir.uid.external.api";
+option objc_class_prefix = "RPC";
+
+
+//identification information
+// (national Id, birthDate)
+// (nationalId,nationalCardSerial)
+// (name,familyName,fatherName)
+
+message PersonBasicInformation{
+  string firstName = 1;
+  string lastName = 2;
+  string fatherName = 3;
+  Gender gender = 4;
+}
+
+message PersonRegistrationStatus{
+  DeathStatus deathStatus = 1;
+}
+
+message PersonBasicIdentificationInformation{
+  string nationalId = 1;
+  string birthDate= 2;
+  string shenasnameSeri =3;
+  string shenasnameSerial =4;
+  string shenasnamehNumber = 5;
+}
+
+enum DeathStatus {
+  DEATH_STATUS_UNDEFINED = 0;
+  DEATH_STATUS_ALIVE = 1;
+  DEATH_STATUS_DEAD = 2;
+}
+
+
+enum Gender {
+  GENDER_UNDEFINED = 0;
+  GENDER_MAlE = 1;
+  GENDER_FEMALE = 2;
+}

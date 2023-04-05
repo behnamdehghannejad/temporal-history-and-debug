@@ -1,0 +1,8 @@
+syntax = "proto3";
+package ir.uid.internal.image.service;
+import "ir/uid/internal/image/national_registry.proto";
+
+
+service NationalRegistry {
+  rpc getImageInfo(GetNationalImageRequest) returns (GetNationalImageResponse) {};
+}

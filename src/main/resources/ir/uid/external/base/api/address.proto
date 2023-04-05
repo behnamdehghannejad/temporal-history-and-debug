@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package ir.uid.external.api;
+option java_multiple_files = true;
+option java_package = "ir.uid.external.api";
+option objc_class_prefix = "RPC";
+
+import "google/type/date.proto";
+import "validate/validate.proto";
+import "google/rpc/status.proto";
+import "ir/uid/base/base.proto";
+
+
+
+message Address{
+  string avenue = 1;
+  string floorNumber = 2;
+  string houseNumber = 3;
+  string location = 4;
+  string parish = 5;
+  string postalCode = 6;
+  string preAvenue = 7;
+  string sideFloor = 8;
+  string state = 9;
+  string townShip = 10;
+  string village = 11;
+  string zone = 12;
+  string buildingName = 13;
+  string description = 14;
+  string locationCode = 15;
+}

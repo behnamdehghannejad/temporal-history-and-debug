@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package ir.uid.external.api;
+option java_multiple_files = true;
+option java_package = "ir.uid.external.api";
+option objc_class_prefix = "RPC";
+
+import "google/type/date.proto";
+import "validate/validate.proto";
+import "google/rpc/status.proto";
+import "ir/uid/base/base.proto";
+import "ir/uid/external/base/api/address.proto";
+import "ir/uid/external/base/api/bank.proto";
+import "ir/uid/external/base/api/person.proto";
+
+
+
+
+message GetPostalCodeAddressInfoRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+  string postalCode = 2;
+}
+
+message GetPostalCodeAddressInfoResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+  ir.uid.external.api.Address address = 2;
+}
+
+
+message GetIbanAccountInformationRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+  string iban = 2;
+}
+
+message GetIbanAccountInformationResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+  ir.uid.external.api.AccountBasicInformation  accountBasicInformation= 2;
+  ir.uid.external.api.AccountStatus accountStatus = 3;
+  repeated ir.uid.external.api.Owner owners = 4;
+}
+
+message GetPersonalInformationRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+  string nationalId = 2;
+  string birthDate = 3;
+}
+
+message GetPersonalInformationResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+  ir.uid.external.api.PersonBasicInformation basicInformation =2;
+  ir.uid.external.api.PersonBasicIdentificationInformation identificationInformation = 3;
+  ir.uid.external.api.PersonRegistrationStatus registrationStatus = 4;
+}
+
+message GetMobileNumberOwnerShipRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+  string nationalId = 2;
+  string mobileNumber = 3;
+}
+
+message GetMobileNumberOwnerShipResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+  bool isMatched = 2;
+}

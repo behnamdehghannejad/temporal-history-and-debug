@@ -1,0 +1,81 @@
+syntax = "proto3";
+package ir.uid.service;
+option java_multiple_files = true;
+option java_package = "ir.uid.service";
+import "google/api/annotations.proto";
+import "ir/uid/base/panel.proto";
+
+service PanelService {
+
+    rpc Login(ir.uid.base.PanelLoginRequest) returns (ir.uid.base.PanelLoginResponse) {
+        option (google.api.http) = {
+            post: "/api/panel/login"
+            body: "*"
+        };
+    };
+    rpc GetWaitingList(ir.uid.base.GetWaitingListRequest) returns (ir.uid.base.GetWaitingListResponse) {
+        option (google.api.http) = {
+            post: "/api/panel/people/waiting"
+            body: "*"
+        };
+    };
+    rpc GetAcceptedList(ir.uid.base.GetAuthenticatedListRequest) returns (ir.uid.base.GetAuthenticatedListResponse) {
+        option (google.api.http) = {
+            post: "/api/panel/people/accepted"
+            body: "*"
+        };
+    };
+    rpc GetRejectedList(ir.uid.base.GetRejectedListRequest) returns (ir.uid.base.GetRejectedListResponse) {
+        option (google.api.http) = {
+            post: "/api/panel/people/rejected"
+            body: "*"
+        };
+    };
+    rpc GetIncompleteList(ir.uid.base.GetIncompleteListRequest) returns (ir.uid.base.GetIncompleteListResponse) {
+        option (google.api.http) = {
+            post: "/api/panel/people/incomplete"
+            body: "*"
+        };
+    };
+    /* only accessible by operator call center*/
+    rpc SendResponse(ir.uid.base.SetPersonPanelResponseRequest) returns (ir.uid.base.SetPersonPanelResponseResponse) {
+        option (google.api.http) = {
+            post: "/api/panel/people/response"
+            body: "*"
+        };
+    };
+
+    rpc RegisterBusiness(ir.uid.base.RegisterBusinessRequest) returns (ir.uid.base.RegisterBusinessResponse){
+        option (google.api.http) = {
+            post: "/api/panel/business/register"
+            body: "*"
+        };
+    }
+    rpc RegisterPanelOperator(ir.uid.base.RegisterOperatorRequest) returns (ir.uid.base.RegisterOperatorResponse){
+        option (google.api.http) = {
+            post: "/api/panel/operator/register"
+            body: "*"
+        };
+    }
+    rpc FindUserByNationalId(ir.uid.base.GetUserByNationalIdRequest) returns (ir.uid.base.GetUserByNationalIdResponse){
+        option (google.api.http) = {
+            post: "/api/panel/people/search/national-id"
+            body: "*"
+        };
+    }
+
+    rpc forcePanelResponse(ir.uid.base.ForcePersonPanelResponseRequest) returns (ir.uid.base.ForcePersonPanelResponseResponse){
+        option (google.api.http) = {
+            post: "/api/panel/force-response"
+            body: "*"
+        };
+    }
+
+    rpc userFinalResult(ir.uid.base.UserFinalResultRequest) returns (ir.uid.base.UserFinalResultResponse){
+        option (google.api.http) = {
+            post: "/api/panel/people/final-result"
+            body: "*"
+        };
+    }
+
+}

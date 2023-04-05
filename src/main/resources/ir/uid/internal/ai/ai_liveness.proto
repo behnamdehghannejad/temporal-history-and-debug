@@ -1,0 +1,91 @@
+syntax = "proto3";
+package ir.uid.internal.ai;
+import "ir/uid/internal/base.proto";
+
+enum LivenessStatus{
+  LIVENESS_STATUS_LIVE = 0;
+  LIVENESS_STATUS_SPOOF = 1;
+  LIVENESS_STATUS_NOT_SURE = 2;
+  LIVENESS_STATUS_FAILED = 3;
+}
+
+enum LivenessFailureReason{
+  LIVENESS_FAILURE_NOT_FAILED = 0;
+  LIVENESS_FAILURE_NOT_ENOUGH_FRAMES = 1;
+  LIVENESS_FAILURE_MULTIPLE_FACES = 2;
+  LIVENESS_FAILURE_FAR_FACE = 3;
+  LIVENESS_FAILURE_NO_FACE = 4;
+  LIVENESS_FAILURE_BAD_QUALITY = 5;
+  LIVENESS_FAILURE_REASON_NO_VIDEO = 6;
+}
+
+enum VideoQuality{
+  VIDEO_STATUS_OK = 0;
+  VIDEO_STATUS_DARK = 1;
+  VIDEO_STATUS_BLUR = 2;
+  VIDEO_STATUS_LOW_CONTRAST = 3;
+  VIDEO_STATUS_NOT_ENOUGH_FRAMES = 4;
+}
+
+enum VideoCodec{
+  X264 = 0;
+  X265 = 1;
+  VP8 = 2;
+  VP9 = 3;
+  AV1 = 4;
+  MPEG = 5;
+}
+
+message Resolution{
+  int32 width = 1;
+  int32 hight = 2;
+}
+
+enum Rotation {
+  ROTATION_NO_ROTATION = 0;
+  ROTATION_BY_90 = 1;
+  ROTATION_BY_180 = 2;
+  ROTATION_BY_270 = 3;
+}
+
+message VideoInformation{
+  VideoQuality quality = 1;
+  VideoCodec codec = 2;
+  bool hasCorrectHeader = 3;
+  bool containsAudio = 4;
+  Resolution resolution = 5;
+  Rotation rotation = 6;
+  int32 numberOfFrames = 10;
+  double duration = 11;
+  double frameRate = 12;
+}
+
+message LivenessParameter{
+  repeated int32 processedFrames = 1;
+  double processTime = 2;
+  //a randomly selected frame from frames that are detected as LIVE
+  int32 selectedFrameForFaceMatching = 3;
+  string modelHash = 4;
+  string modelId = 5;
+  string codeId = 6;
+}
+
+message LivenessInformation {
+  LivenessStatus status = 1;
+  LivenessFailureReason primaryError = 2;
+  // todo : add a detailed reason for liveness failure
+}
+
+
+
+message LivenessServiceRequest{
+  ServiceRequestContext requestContext = 1;
+  AssetAccess videoLink = 2;
+  AssetAccess uploadImageLink = 3;
+}
+
+message LivenessServiceResponse{
+  ServiceResponseContext responseContext = 1;
+  VideoInformation videoInformation = 2;
+  LivenessInformation livenessResult = 3;
+}

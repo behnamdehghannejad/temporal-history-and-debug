@@ -1,0 +1,10 @@
+syntax = "proto3";
+package ir.uid.internal.jibit.service;
+import "ir/uid/internal/jibit/jibit.proto";
+
+service JibitService {
+  rpc shahkar(ShahkarRequest) returns(ShahkarResponse);
+  rpc getAddressByPostalCode(GetAddressByPostalCodeRequest) returns(GetAddressByPostalCodeResponse);
+  rpc getIdentitySimilarity(GetIdentitySimilarityRequest) returns(GetIdentitySimilarityResponse);
+  rpc ibanOwnerInquiryRequest(IbanOwnerInquiryRequest) returns(IbanOwnerInquiryResponse);
+}

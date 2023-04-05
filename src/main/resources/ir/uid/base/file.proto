@@ -1,0 +1,38 @@
+syntax = "proto3";
+package ir.uid.base;
+option java_multiple_files = true;
+option java_package = "ir.uid.base";
+import "ir/uid/base/base.proto";
+
+enum FileType{
+  IMAGE = 0;
+  VIDEO = 1;
+}
+
+enum UploadReason{
+  UPLOAD_REASON_SIGNATURE_IMAGE = 0;
+  UPLOAD_REASON_LIVENESS_VIDEO = 1;
+}
+
+message UploadFileRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+  FileType fileType = 2;
+  bytes hash = 3;
+  UploadReason uploadReason = 4;
+}
+
+message UploadFileResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+  string uploadURL = 2;
+  string uploadToken = 3;
+}
+
+message VerifyUploadRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+  string uploadToken = 2;
+}
+
+
+message VerifyUploadResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+}

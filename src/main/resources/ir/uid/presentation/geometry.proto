@@ -1,0 +1,29 @@
+syntax = "proto3";
+package ir.uid.presentation;
+
+option cc_enable_arenas = true;
+option java_multiple_files = true;
+
+option java_package = "ir.uid.presentation";
+option swift_prefix = "";
+import "validate/validate.proto";
+
+
+// A structure contains size of area in Cartesian system.
+message Size {
+    // Width of area.
+    double width = 1 [(validate.rules).double.gte = 0];
+
+    // Height of area.
+    double height = 2 [(validate.rules).double.gte = 0];
+}
+
+
+// Size in points.
+message DisplaySize {
+    // Display size in pixels
+    Size size = 1;
+
+    // Pixels per point, E.g. 2 for Retina displays.
+    double ppp = 2 [(validate.rules).double.gt = 0];
+}

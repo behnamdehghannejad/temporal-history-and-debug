@@ -1,0 +1,48 @@
+syntax = "proto3";
+package ir.uid.service;
+option java_multiple_files = true;
+option java_package = "ir.uid.service";
+
+import "google/api/annotations.proto";
+import "ir/uid/base/file.proto";
+
+service UploadService {
+  rpc RequestUpload(ir.uid.base.UploadFileRequest) returns (ir.uid.base.UploadFileResponse) {
+    option (google.api.http) = {
+      post: "/api/upload-link"
+      body: "*"
+    };
+  };
+  rpc VerifyUpload(ir.uid.base.VerifyUploadRequest) returns (ir.uid.base.VerifyUploadResponse) {
+    option (google.api.http) = {
+      post: "/api/upload-verify"
+      body: "*"
+    };
+  };
+
+  rpc RequestSignatureUpload(ir.uid.base.UploadFileRequest) returns (ir.uid.base.UploadFileResponse) {
+    option (google.api.http) = {
+      post: "/api/upload-link/signature"
+      body: "*"
+    };
+  };
+  rpc VerifySignatureUpload(ir.uid.base.VerifyUploadRequest) returns (ir.uid.base.VerifyUploadResponse) {
+    option (google.api.http) = {
+      post: "/api/upload-verify/signature"
+      body: "*"
+    };
+  };
+
+  rpc RequestLivenessUpload(ir.uid.base.UploadFileRequest) returns (ir.uid.base.UploadFileResponse) {
+    option (google.api.http) = {
+      post: "/api/upload-link/livness"
+      body: "*"
+    };
+  };
+  rpc VerifyLivenessUpload(ir.uid.base.VerifyUploadRequest) returns (ir.uid.base.VerifyUploadResponse) {
+    option (google.api.http) = {
+      post: "/api/upload-verify/liveness"
+      body: "*"
+    };
+  };
+}

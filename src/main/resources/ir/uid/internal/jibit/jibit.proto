@@ -1,0 +1,51 @@
+syntax = "proto3";
+package ir.uid.internal.jibit;
+import "ir/uid/internal/base.proto";
+
+message ShahkarRequest {
+  ServiceRequestContext requestContext = 1;
+  string nationalCode = 2;
+  string mobileNumber = 3;
+
+}
+
+message ShahkarResponse {
+  ServiceResponseContext responseContext = 1;
+  bool matched = 2;
+}
+
+message GetIdentitySimilarityRequest{
+  ServiceRequestContext requestContext = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string birthDate = 4;
+  string nationalId = 5;
+}
+
+message GetIdentitySimilarityResponse{
+  ServiceResponseContext responseContext = 1;
+  int32 firstNameSimilarityPercentage = 2;
+  int32 lastNameSimilarityPercentage = 3;
+}
+
+message GetAddressByPostalCodeRequest{
+  ServiceRequestContext requestContext = 1;
+  string postalCode = 2;
+}
+
+message GetAddressByPostalCodeResponse{
+  ServiceResponseContext responseContext = 1;
+  string postalCode = 2;
+  string address = 3;
+}
+
+message IbanOwnerInquiryRequest{
+  ServiceRequestContext requestContext = 1;
+  string iban = 2;
+  string ownerName = 3;
+}
+
+message IbanOwnerInquiryResponse{
+  ServiceResponseContext responseContext = 1;
+  bool isIbanOwner = 2;
+}

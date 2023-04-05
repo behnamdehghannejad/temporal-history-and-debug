@@ -1,0 +1,11 @@
+syntax = "proto3";
+//todo :change this package from ir.uid.internal.ai to ir.uid.internal
+package ir.uid.internal.sitad.service;
+import "ir/uid/internal/sitad/sitad.proto";
+
+service SitadService{
+  rpc getNationalImage(GetNationalImageRequest) returns (GetNationalImageResponse) {};
+  rpc getInquiry(GetInquiryRequest) returns (GetInquiryResponse) {};
+  rpc getAddressInfo(GetAddressInfoRequest) returns (GetAddressInfoResponse) {};
+  rpc getBankAccount(GetBankAccountRequest) returns (GetBankAccountResponse) {};
+}

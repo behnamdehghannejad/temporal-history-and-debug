@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ir.uid.base;
+option java_multiple_files = true;
+option java_package = "ir.uid.base";
+import "ir/uid/base/base.proto";
+
+message LivenessCheckRequest{
+  ir.uid.base.RequestContext requestContext = 1;
+}
+
+message LivenessCheckResponse{
+  ir.uid.base.ResponseContext responseContext = 1;
+  string message = 2;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+package ir.uid.internal.image;
+
+import "ir/uid/internal/base.proto";
+import "ir/uid/external/base/user.proto";
+
+
+message BareInternalRequst{
+  ServiceRequestContext requestContext = 1;
+}
+
+message BareInternalResponse{
+  ServiceResponseContext responseContext = 1;
+}
+
+message GetNationalImageRequest{
+  ServiceRequestContext requestContext = 1;
+  ir.uid.base.UserInformation userInfo = 2;
+}
+
+message GetNationalImageResponse{
+  ServiceResponseContext responseContext = 1;
+  string accessURL  = 2;
+  MinIOAssetInformation minioAssetInformation = 3;
+}

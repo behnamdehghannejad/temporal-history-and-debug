@@ -1,0 +1,15 @@
+syntax = "proto3";
+package ir.uid.service;
+option java_multiple_files = true;
+option java_package = "ir.uid.service";
+import "google/api/annotations.proto";
+import "ir/uid/base/face-matching.proto";
+
+service FaceMatchingService {
+  rpc CheckLiveness(ir.uid.base.FaceMatchingCheckRequest) returns (ir.uid.base.FaceMatchingCheckResponse) {
+    option (google.api.http) = {
+      post: "/api/face-check"
+      body: "*"
+    };
+  };
+}

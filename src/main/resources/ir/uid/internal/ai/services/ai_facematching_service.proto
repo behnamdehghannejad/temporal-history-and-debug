@@ -1,0 +1,7 @@
+syntax = "proto3";
+package ir.uid.internal.ai.service;
+import "ir/uid/internal/ai/ai_facematching.proto";
+
+service InternalFaceMatchingService {
+  rpc CheckFaceMatching(FaceMatchingServiceRequest) returns (FaceMatchingServiceResponse);
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package ir.uid.internal.sana.service;
+import "ir/uid/internal/sana/sana.proto";
+
+
+service SanaService {
+  rpc getSanaPersonImage(GetSanaPersonImageRequest) returns (GetSanaPersonImageResponse) {};
+  rpc getSanaTestToken(CreateTestSanaUserTokenRequest) returns (CreateTestSanaUserTokenResponse) {};
+  rpc validateSanaUserToken(ValidateSanaUserTokenRequest) returns (ValidateSanaUserTokenResponse) {};
+  rpc sendSanaAuthenticationResponse(SetSanaPersonAbsenceAuthenticationPictureAndSignImageRequest) returns (SetSanaPersonAbsenceAuthenticationPictureAndSignImageResponse) {};
+}

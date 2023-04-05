@@ -1,0 +1,38 @@
+syntax = "proto3";
+package ir.uid.service;
+option java_multiple_files = true;
+option java_package = "ir.uid.service";
+
+import "google/api/annotations.proto";
+import "ir/uid/base/file.proto";
+import "ir/uid/external/base/api/api.proto";
+
+service APIService {
+  rpc PersonInquiry(ir.uid.external.api.GetPersonalInformationRequest) returns (ir.uid.external.api.GetPersonalInformationResponse) {
+    option (google.api.http) = {
+      post: "/api/inquiry/person"
+      body: "*"
+    };
+  };
+
+  rpc AddressInquiry(ir.uid.external.api.GetPostalCodeAddressInfoRequest) returns (ir.uid.external.api.GetPostalCodeAddressInfoResponse) {
+    option (google.api.http) = {
+      post: "/api/inquiry/address"
+      body: "*"
+    };
+  };
+
+  rpc IbanInquiry(ir.uid.external.api.GetIbanAccountInformationRequest) returns (ir.uid.external.api.GetIbanAccountInformationResponse) {
+    option (google.api.http) = {
+      post: "/api/inquiry/iban"
+      body: "*"
+    };
+  };
+
+  rpc CheckMobileNumberOwnerShipInquiry(ir.uid.external.api.GetMobileNumberOwnerShipRequest) returns (ir.uid.external.api.GetMobileNumberOwnerShipResponse) {
+    option (google.api.http) = {
+      post: "/api/inquiry/mobile/owner"
+      body: "*"
+    };
+  };
+}

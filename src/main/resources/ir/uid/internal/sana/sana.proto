@@ -1,0 +1,80 @@
+syntax = "proto3";
+//todo :change this package from ir.uid.internal to ir.uid.internal
+package ir.uid.internal.sana;
+import "google/rpc/status.proto";
+import "ir/uid/internal/base.proto";
+import "ir/uid/external/base/user.proto";
+
+enum SanaResultStatus{
+  SANA_RESULT_STATUS_UNKNOWN = 0;
+  SANA_RESULT_STATUS_ACCEPT = 1;
+  SANA_RESULT_STATUS_REJECT = 2;
+  SANA_RESULT_STATUS_TIMEOUT = 3;
+}
+
+enum SanaError{
+  SANA_ERROR_UNKNOWN = 0;
+  SANA_ERROR_FACE_DO_NOT_MATCH = 1;
+  SANA_ERROR_FAKE = 2;
+  SANA_ERROR_FAR_FACE = 3;
+  SANA_ERROR_INCOMPATIBLE_VIDEO = 4;
+  SANA_ERROR_MANY_FACES = 5;
+  SANA_ERROR_NO_FACE = 6;
+  SANA_ERROR_INCOMPATIBLE_LIGHT_VIDEO = 7;
+  SANA_ERROR_INCOMPATIBLE_ANGLE_CAMERA = 8;
+  SANA_ERROR_INCOMPATIBLE_LOOK_CAMERA = 9;
+  SANA_ERROR_INVALID_SIGNATURE = 10;
+  SANA_ERROR_INCOMPATIBLE_HEJAB = 11;
+  SANA_ERROR_INCOMPATIBLE_BACKGROUND = 12;
+}
+
+message GetSanaPersonImageRequest{
+  ir.uid.internal.ServiceRequestContext requestContext = 1;
+  string sanaUserToken = 2;
+}
+
+message GetSanaPersonImageResponse{
+  ir.uid.internal.ServiceResponseContext responseContext = 1;
+  string accessURL = 2;
+  ir.uid.internal.MinIOAssetInformation minioAssetInformation = 3;
+  int32 sexType = 4;
+  string birthDate = 5;
+}
+
+message ValidateSanaUserTokenRequest{
+  ir.uid.internal.ServiceRequestContext requestContext = 1;
+  string sanaUserToken = 2;
+}
+
+message ValidateSanaUserTokenResponse {
+  ir.uid.internal.ServiceResponseContext responseContext = 1;
+  bool isValid = 2;
+}
+
+
+message CreateTestSanaUserTokenRequest{
+  ir.uid.internal.ServiceRequestContext requestContext = 1;
+  string nationalId = 2;
+  string birthDate = 3;
+  string mobileNumber = 4;
+}
+
+message CreateTestSanaUserTokenResponse{
+  ir.uid.internal.ServiceResponseContext responseContext = 1;
+  string sanaUserToken = 2;
+}
+
+
+message SetSanaPersonAbsenceAuthenticationPictureAndSignImageRequest{
+  ir.uid.internal.ServiceRequestContext requestContext = 1;
+  string sanaUserToken = 2;
+  SanaResultStatus status = 3;
+  SanaError errorCode = 4;
+  ir.uid.internal.MinIOAssetInformation signatureImage = 5;
+  ir.uid.internal.MinIOAssetInformation personImage = 6;
+}
+
+
+message SetSanaPersonAbsenceAuthenticationPictureAndSignImageResponse{
+  ir.uid.internal.ServiceResponseContext responseContext = 1;
+}

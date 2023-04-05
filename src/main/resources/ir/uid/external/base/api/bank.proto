@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package ir.uid.external.api;
+option java_multiple_files = true;
+option java_package = "ir.uid.external.api";
+option objc_class_prefix = "RPC";
+
+message BankInformation{
+  string bankName = 1;
+}
+
+
+message AccountBasicInformation{
+  string iban = 1;
+  string accountNumber = 2;
+  BankInformation bankInformation = 3;
+}
+
+
+message Owner{
+  string firstName = 1;
+  string lastName = 2;
+  string nationalIdentifier = 3;
+  ir.uid.external.api.CustomerType customerType = 4;
+}
+
+
+enum CustomerType{
+  CUSTOMER_TYPE_UNDEFINED = 0;            // نامشخص
+  CUSTOMER_TYPE_UNKNOWN = 1;            // ناشناخته
+  CUSTOMER_TYPE_REAL= 2;                   // حقیقی
+  CUSTOMER_TYPE_LEGAL = 3; // حقوقی
+  CUSTOMER_TYPE_COMMON = 4;                // مشترک
+}
+
+
+enum DepositIdentifierValidity{
+  DEPOSIT_IDENTIFIER_VALIDITY_UNDEFINED = 0;                      // نامشخص
+  DEPOSIT_IDENTIFIER_VALIDITY_VALID = 1;        // به شناسه واریز نیاز دارد
+  DEPOSIT_IDENTIFIER_VALIDITY_NOT_VALID= 2;    // به شناسه واریز نیاز ندارد
+  DEPOSIT_IDENTIFIER_VALIDITY_UNAVAILABLE = 3;      // اطلاعات در دسترس نیست
+}
+
+
+
+enum NeedDepositIdentifier{
+  NEED_DEPOSIT_IDENTIFIER_UNDEFINED = 0;                 // نامشخص
+  NEED_DEPOSIT_IDENTIFIER_YES = 1;                        // معتبر
+  NEED_DEPOSIT_IDENTIFIER_NO= 2; // نامعتبر
+  NEED_DEPOSIT_IDENTIFIER_UNAVAILABLE = 3; // اطلاعات در دسترس نیست
+}
+
+
+enum AccountStatus{
+  ACCOUNT_STATUS_UNDEFINED = 0;                                             // نامشخص
+  ACCOUNT_STATUS_ACTIVE = 1;                                             // حساب فعال
+  ACCOUNT_STATUS_CLOSED= 2;                     // حساب بسته
+  ACCOUNT_STATUS_INACTIVE = 3;                                           // حساب راکد
+  ACCOUNT_STATUS_BLOCKED_WITH_DEPOSIT = 4;// حساب مسدود با قابلیت واریز
+  ACCOUNT_STATUS_BLOCKED = 5;                         // حساب مسدود بدون قابلیت واریز
+  ACCOUNT_STATUS_ERROR_IN_RESPONSE = 6;  // بروز خطا در پاسخ دهی در سرویس بانک مرکزی
+  ACCOUNT_STATUS_OTHER = 7;                                            // سایر موارد
+}

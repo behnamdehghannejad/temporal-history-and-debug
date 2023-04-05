@@ -1,0 +1,49 @@
+syntax = "proto3";
+package ir.uid.service;
+option java_multiple_files = true;
+option java_package = "ir.uid.service";
+import "google/api/annotations.proto";
+import "ir/uid/base/panel.proto";
+
+
+
+service BusinessService {
+
+  rpc RegisterBusiness(ir.uid.base.RegisterBusinessRequest) returns (ir.uid.base.RegisterBusinessResponse){
+    option (google.api.http) = {
+      post: "/api/business/register"
+      body: "*"
+    };
+  }
+  rpc UpdateBusiness(ir.uid.base.UpdateBusinessInformationRequest) returns (ir.uid.base.UpdateBusinessInformationResponse){
+    option (google.api.http) = {
+      post: "/api/business/update"
+      body: "*"
+    };
+  }
+
+  rpc GetListBusinessInformation(ir.uid.base.GetBusinessListRequest) returns (ir.uid.base.GetBusinessListResponse){
+    option (google.api.http) = {
+      post: "/api/business/list"
+      body: "*"
+    };
+  }
+
+  rpc GetAvailableWorkList(ir.uid.base.GetAvailableWorkFlowsRequest) returns (ir.uid.base.GetAvailableWorkFlowsResponse){
+    option (google.api.http) = {
+      post: "/api/workflow/list"
+      body: "*"
+    };
+  }
+
+  rpc GetAvailableConfigKeyList(ir.uid.base.GetAvailableConfigKeyRequest) returns (ir.uid.base.GetAvailableConfigKeyResponse){
+    option (google.api.http) = {
+      post: "/api/configKey/list"
+      body: "*"
+    };
+  }
+
+
+
+
+}

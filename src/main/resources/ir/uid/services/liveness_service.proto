@@ -1,0 +1,15 @@
+syntax = "proto3";
+package ir.uid.service;
+option java_multiple_files = true;
+option java_package = "ir.uid.service";
+import "google/api/annotations.proto";
+import "ir/uid/base/liveness.proto";
+
+service LivenessService {
+  rpc CheckLiveness(ir.uid.base.LivenessCheckRequest) returns (ir.uid.base.LivenessCheckResponse) {
+    option (google.api.http) = {
+      post: "/api/liveness-check"
+      body: "*"
+    };
+  };
+}

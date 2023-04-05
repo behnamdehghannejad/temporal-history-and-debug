@@ -1,0 +1,52 @@
+syntax = "proto3";
+package ir.uid.base;
+option java_multiple_files = true;
+
+import "ir/uid/base/base.proto";
+import "ir/uid/base/panel.proto";
+
+message AssetInfo{
+  string pathFile = 1;
+  string uploadToken = 2;
+}
+
+message UploadLinkWorkflowResult {
+  base.ExceptionInfo exceptionInfo = 1;
+  string uploadLink = 2;
+}
+
+message VerifyFileWorkflowResult {
+  base.ExceptionInfo exceptionInfo = 1;
+  bool fileHasBeenVerified = 2;
+}
+
+message BusinessFindActivityResponse{
+  base.ExceptionInfo exceptionInfo = 1;
+  BusinessBasicInformation businessInformation = 2;
+}
+
+//client response -------------------------------------------------
+
+message RegisterUserClientResponse{
+  base.ExceptionInfo exceptionInfo = 1;
+  int64 userId = 2;
+}
+ message UploadLinkInfoClient{
+  string uploadLink = 1;
+  string uploadToken = 2;
+ }
+
+ message VerifyFileClientResponse{
+   base.ExceptionInfo exceptionInfo = 1;
+   bool verifyFile = 2;
+ }
+
+ message LivenessLinks{
+  string uploadLivenessImageLink = 1;
+  string videoLink = 2;
+ }
+
+ message FaceMatchingLinks{
+  string downloadLivenessImageLink = 1;
+  string downloadImageIdLink = 2;
+ }
