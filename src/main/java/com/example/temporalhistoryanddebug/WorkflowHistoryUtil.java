@@ -1,38 +1,56 @@
 package com.example.temporalhistoryanddebug;
 
 import io.temporal.api.common.v1.WorkflowExecution;
+import io.temporal.api.enums.v1.WorkflowExecutionStatus;
+import io.temporal.api.workflow.v1.WorkflowExecutionInfo;
 import io.temporal.api.workflowservice.v1.GetWorkflowExecutionHistoryRequest;
+import io.temporal.api.workflowservice.v1.ListWorkflowExecutionsRequest;
+import io.temporal.api.workflowservice.v1.ListWorkflowExecutionsResponse;
+import io.temporal.client.WorkflowClient;
 import io.temporal.internal.common.WorkflowExecutionHistory;
 import io.temporal.serviceclient.WorkflowServiceStubs;
+
+import java.util.List;
 
 public class WorkflowHistoryUtil {
 
     private static final WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
+    private static final WorkflowClient client = WorkflowClient.newInstance(service);
 
-    public static String getWorkflowExecutionHistoryAsJson(String workflowId, String runId) {
+    public static String getWorkflowExecutionHistoryAsJson(String workflowId) {
+        ListWorkflowExecutionsResponse newCustomersResponse =
+                getExecutionsResponse(
+                        "WorkflowType='WorkFlow'");
+        List<WorkflowExecutionInfo> newExecutionInfo = newCustomersResponse.getExecutionsList();
+        WorkflowExecutionInfo executionInfo = newExecutionInfo
+                .stream().filter(workflowExecutionInfo -> workflowExecutionInfo.getExecution()
+                        .getWorkflowId().equals(workflowId))
+                .findFirst()
+                .get();
+
         WorkflowExecution build = WorkflowExecution.newBuilder()
                 .setWorkflowId(workflowId)
-                .setRunId(runId)
+                .setRunId(executionInfo.getExecution().getRunId())
                 .build();
 
         GetWorkflowExecutionHistoryRequest request =
                 GetWorkflowExecutionHistoryRequest.newBuilder()
-                        .setNamespace("default")
+                        .setNamespace(client.getOptions().getNamespace())
                         .setExecution(build)
                         .build();
 
-//        GetWorkflowExecutionHistoryResponse workflowExecutionHistory = service.blockingStub().getWorkflowExecutionHistory(request);
-//        String jsonHistory;
-//        try {
-//            jsonHistory = JsonFormat.printer().print(workflowExecutionHistory.getHistory());
-//        } catch (Exception e) {
-//            jsonHistory = "???????????????????????????????????????????!!!4444444444444444444444444444444444444444";
-//        }
-
-        String jsonHistory = new WorkflowExecutionHistory(
+        return new WorkflowExecutionHistory(
                 service.blockingStub().getWorkflowExecutionHistory(request).getHistory()).toJson(true);
-//        System.out.println(jsonHistory);
+    }
 
-        return jsonHistory;
+    private static ListWorkflowExecutionsResponse getExecutionsResponse(String query) {
+        ListWorkflowExecutionsRequest listWorkflowExecutionRequest =
+                ListWorkflowExecutionsRequest.newBuilder()
+                        .setNamespace(client.getOptions().getNamespace())
+                        .setQuery(query)
+                        .build();
+        ListWorkflowExecutionsResponse listWorkflowExecutionsResponse =
+                service.blockingStub().listWorkflowExecutions(listWorkflowExecutionRequest);
+        return listWorkflowExecutionsResponse;
     }
 }

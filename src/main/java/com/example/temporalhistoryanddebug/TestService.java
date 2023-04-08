@@ -32,7 +32,7 @@ public class TestService {
     public String start() {
         WorkFlow workFlowConnection = createWorkFlowConnection("1111111111111222222222222222");
         String start = workFlowConnection.start();
-        var workflowExecution = WorkflowClient.start(workFlowConnection::start);
+//        var workflowExecution = WorkflowClient.start(workFlowConnection::start);
         String extracted = extracted(start, "1111111111111222222222222222");
 
         WorkflowLog workflowLog = WorkflowLog.builder()
@@ -45,7 +45,7 @@ public class TestService {
 
     private String extracted(String runId, String workflowId) {
 
-        return WorkflowHistoryUtil.getWorkflowExecutionHistoryAsJson(workflowId, runId);
+        return WorkflowHistoryUtil.getWorkflowExecutionHistoryAsJson(workflowId);
 
 //        System.out.println(jsonHistory);
     }

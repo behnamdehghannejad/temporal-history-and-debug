@@ -14,13 +14,8 @@ class TemporalHistoryAndDebugApplicationTests {
     WorkFlowInfoRepository workFlowInfoRepository;
     @Test
     public void replayFromHistory() throws Exception {
-        String workflowId = "1111111111111222222222222222";
-        String runId = "bc2a85d1-2efe-4e6d-b446-4b1347e2f0c0";
-
         WorkflowLog workflowLog = workFlowInfoRepository.findById("63d64b0c37ad746ea8b4af67").get();
         String jsonHistory = workflowLog.getHistory();
-
-//        String jsonHistory = WorkflowHistoryUtil.getWorkflowExecutionHistoryAsJson(workflowId, runId);
 
         System.out.println(jsonHistory);
         WorkflowReplayer.replayWorkflowExecution(

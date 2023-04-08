@@ -2,6 +2,7 @@ package com.example.temporalhistoryanddebug;
 
 import io.temporal.activity.ActivityOptions;
 import io.temporal.common.RetryOptions;
+import io.temporal.internal.common.WorkflowExecutionHistory;
 import io.temporal.workflow.Workflow;
 import io.temporal.workflow.WorkflowInfo;
 
